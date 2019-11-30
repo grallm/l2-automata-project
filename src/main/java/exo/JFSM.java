@@ -1,4 +1,4 @@
-/**
+package exo; /**
  * 
  * Copyright (C) 2017 Emmanuel DESMONTILS
  * 
@@ -26,7 +26,7 @@
  **/
 
 /**
- * JFSM.java
+ * exo.JFSM.java
  *
  *
  * Created: 2017-08-25

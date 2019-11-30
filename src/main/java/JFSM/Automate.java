@@ -368,7 +368,7 @@ public class Automate implements Cloneable {
 			for(String iSTate : I) {
 				I.remove(iSTate);
 			}
-			
+
 			// Add new IState to I and Q
 			this.addEtat(uniqueIState);
 			try {
@@ -542,7 +542,7 @@ public class Automate implements Cloneable {
 			File ff=new File(file); 
 			ff.createNewFile();
 			FileWriter ffw=new FileWriter(ff);
-			ffw.write("<?xml version='1.0' encoding='UTF-8' standalone='no'?><!--Created with JFSM.--><structure>\n");  
+			ffw.write("<?xml version='1.0' encoding='UTF-8' standalone='no'?><!--Created with exo.JFSM.--><structure>\n");
 			ffw.write("\t<type>fa</type>\n"); 
 			ffw.write("\t<automaton>\n");
 			for(Etat e : Q.values()) {
