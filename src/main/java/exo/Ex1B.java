@@ -16,25 +16,25 @@ public class Ex1B {
    public static void main(String argv []) throws JFSMException {
 	   
 	   // Automate standard
-	   	Set<String> A = new HashSet<String>();      
+	 /*  	Set<String> A = new HashSet<String>();
 	      A.add("GA");
-	
+
 	      Set<Etat> Q = new HashSet<Etat>();
 	      Q.add(new Etat("1"));Q.add(new Etat("2"));
-	
+
 	      Set<Transition> mu = new HashSet<Transition>();
-	
+
 	      mu.add(new Transition("1","BU","2"));
-	      
+
 	      Set<String> F = new HashSet<String>();
 	      F.add("2");
-	      
+
 	      Set<String> I = new HashSet<String>();
 	      I.add("1");
-	      Automate afn = new AFN(A, Q, I, F, mu);
+	      Automate afn = new AFN(A, Q, I, F, mu);*/
 	   
 	   // Automate non standard
-	      /*Set<String> A = new HashSet<String>();      
+	      Set<String> A = new HashSet<String>();
 	      A.add("MEU");A.add("GA");A.add("ZO");A.add("BU");
 	      
 	      Set<Etat> Q = new HashSet<Etat>();
@@ -75,9 +75,9 @@ public class Ex1B {
 	      mu.add(new Transition("9","MEU","8"));
 	      mu.add(new Transition("9","BU","9"));
 
-	      Automate afn = new AFN(A, Q, I, F, mu);*/
+	      Automate afn = new AFN(A, Q, I, F, mu);
 
-	      System.out.println(afn.estStandard());
+	      System.out.println(afn.standardiser().estStandard());
 //	      System.out.println(afn);
 //	      
 //	      List<String> l = new ArrayList<String>();

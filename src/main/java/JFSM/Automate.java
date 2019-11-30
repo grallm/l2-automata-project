@@ -327,11 +327,7 @@ public class Automate implements Cloneable {
 	*/
 	public boolean estUnitaire() {
 		// Unitaire
-		if(I.size() == 1) {
-			return true;
-		}
-		
-		return false;
+		return I.size() == 1;
 	}
 
 	/** 
@@ -339,47 +335,40 @@ public class Automate implements Cloneable {
 	* @return un automate équivalent standard
 	*/
 	public Automate standardiser() {
-		System.out.println("standardiser() : méthode non implémentée");
 		Automate afn = (Automate) this.clone();
 		
 		// Retourner le même s'il est standard
 		if(afn.estStandard()) afn = this;
 		
 		// Standardiser
-		// http://www.momirandum.com/automates-finis/Standardisation.html
 		else {
-			// Create new ISTate
-			// Check if not same name ?? HOW TO DO
-			// Useful unitariser() ? -> not same : only one state but juste merge all InitSt
+			// Create new initial state
 			Etat uniqueIState = new Etat("I");
-			
-			// Change all transitions sources from other IStates to this one
-			for(Transition trans : mu) {
-				if(I.contains(trans.source)) {
+
+			// Change all transitions sources from other initial states to this one
+			for (Transition trans : mu) {
+				if (I.contains(trans.source)) {
 					try {
-						this.addTransition(new Transition(uniqueIState.name, trans.symbol, trans.source));
+						afn.addTransition(new Transition(uniqueIState.name, trans.symbol, trans.source));
 					} catch (JFSMException e) {
 						e.printStackTrace();
 					}
 				}
 			}
-			
-			// Remove all other IStates from I
-			for(String iSTate : I) {
-				I.remove(iSTate);
+
+			// Remove all other initial state from I
+			for (String iSTate : I) {
+				afn.I.remove(iSTate);
 			}
 
-			// Add new IState to I and Q
-			this.addEtat(uniqueIState);
+			// Add new initial state to I and Q
+			afn.addEtat(uniqueIState);
 			try {
-				this.setInitial(uniqueIState);
+				afn.setInitial(uniqueIState);
 			} catch (JFSMException e) {
 				e.printStackTrace();
 			}
 		}
-		
-
-		// A compléter
 
 		return afn;
 	}
@@ -630,46 +619,57 @@ class JFLAPHandler extends DefaultHandler {
 	}
 
 	public void startElement(String namespaceURI, String sName, String name, Attributes attrs) {
-		if (name=="state") {
-			state_name = attrs.getValue("name");
-			state_id = attrs.getValue("id");
-			final_state = false;
-			initial_state = false;
-		} else if (name=="initial") {
-			initial_state = true;
-		} else if (name=="final") {
-			final_state = true;
+		switch (name) {
+			case "state":
+				state_name = attrs.getValue("name");
+				state_id = attrs.getValue("id");
+				final_state = false;
+				initial_state = false;
+				break;
+			case "initial":
+				initial_state = true;
+				break;
+			case "final":
+				final_state = true;
+				break;
 		}
 		cdc="";
 	}
 
 	public void endElement(String uri, String localName, String name) {
-		if (name=="state") {
-			e = new Etat(state_id);
-			Q.add(e);
-			if (initial_state) I.add(state_id);
-			if (final_state) F.add(state_id);
-		} else if (name=="transition") {
-			try{
-				if (read!="") {
-					A.add(read);
-					Transition t = new Transition(from,read,to);
-					mu.add(t);
-				} else {
-					EpsilonTransition t = new EpsilonTransition(from,to);
-					mu.add(t);
+		switch (name) {
+			case "state":
+				e = new Etat(state_id);
+				Q.add(e);
+				if (initial_state) I.add(state_id);
+				if (final_state) F.add(state_id);
+				break;
+			case "transition":
+				try {
+					if (!read.equals("")) {
+						A.add(read);
+						Transition t = new Transition(from, read, to);
+						mu.add(t);
+					} else {
+						EpsilonTransition t = new EpsilonTransition(from, to);
+						mu.add(t);
+					}
+				} catch (JFSMException e) {
+					System.out.println("Erreur:" + e);
 				}
-			} catch (JFSMException e) {
-				System.out.println("Erreur:"+e);
-			}
-		} else if (name=="type") {
-		
-		} else if (name=="from") {
-			from = cdc;
-		} else if (name=="to") {
-			to = cdc;
-		} else if (name=="read") {
-			read = cdc;
+				break;
+			case "type":
+
+				break;
+			case "from":
+				from = cdc;
+				break;
+			case "to":
+				to = cdc;
+				break;
+			case "read":
+				read = cdc;
+				break;
 		}
 	}
 }
