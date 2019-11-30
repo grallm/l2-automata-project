@@ -415,10 +415,21 @@ public class Automate implements Cloneable {
 	* @return booléen
 	*/
 	public boolean estNormalise() {
-		System.out.println("estNormalise() : méthode non implémentée");
 		boolean ok = false;
 
-		// A compléter
+		// Normalised is standardised with only one final state and no transitions from it
+		if(this.estStandard() && this.F.size() == 1){
+			// Check all transitions
+			Set<String> allSources = new HashSet<String>();
+			for(Transition elem : mu) {
+				allSources.add(elem.source);
+			}
+
+			// Check if the Final State is in the Source States
+			if(!allSources.contains(F.toArray()[0])) {
+				ok = true;
+			}
+		}
 		
 		return ok;
 	}
