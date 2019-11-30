@@ -25,7 +25,7 @@ public class Ex1B {
 		Set<Transition> mu = new HashSet<Transition>();
 
 		mu.add(new Transition("1","BU","2"));
-//		mu.add(new Transition("2","BU","1"));
+		mu.add(new Transition("2","BU","1"));
 
 		Set<String> F = new HashSet<String>();
 		F.add("2");
@@ -80,6 +80,7 @@ public class Ex1B {
 
 //		System.out.println(afn.standardiser().estStandard());
 		System.out.println(afn.estNormalise());
+		System.out.println(afn.standardiser().normaliser().estNormalise());
 //		System.out.println(afn);
 //
 //		List<String> l = new ArrayList<String>();

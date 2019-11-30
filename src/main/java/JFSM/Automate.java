@@ -405,7 +405,44 @@ public class Automate implements Cloneable {
 		System.out.println("normaliser() : méthode non implémentée");
 		Automate afn = (Automate) this.clone();
 
-		// A compléter
+		/** TODO
+		 * Not necessary to emondate -> will have some useless states
+		 * Create new final state
+		 * Duplicate all transitions to final states to the new one
+		 * */
+
+		// Return the same if already normalized
+		if(afn.estNormalise()) afn = this;
+
+		// Normalize
+		else {
+			// Create new final state
+			Etat uniqueFState = new Etat("F");
+
+			// Change all transitions sources from other final initial states to this one
+			for (Transition trans : mu) {
+				if (F.contains(trans.cible)) {
+					try {
+						afn.addTransition(new Transition(trans.source, trans.symbol, uniqueFState.name));
+					} catch (JFSMException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+			// Remove all other final states from F
+			for (String fSTate : F) {
+				afn.F.remove(fSTate);
+			}
+
+			// Add new initial state to F and Q
+			afn.addEtat(uniqueFState);
+			try {
+				afn.setFinal(uniqueFState);
+			} catch (JFSMException e) {
+				e.printStackTrace();
+			}
+		}
 
 		return afn;
 	}
