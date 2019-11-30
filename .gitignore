@@ -1,3 +1,10 @@
+# IntellJ
+.idea/
+
+# OSX
+.DS_Store
+
+# Java
 *.class
 .vscode/launch.json
 launch.json

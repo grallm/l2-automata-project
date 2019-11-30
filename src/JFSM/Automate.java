@@ -322,12 +322,62 @@ public class Automate implements Cloneable {
 	}
 
 	/** 
+	* Détermine si l'automate est unitaire  
+	* @return booléen
+	*/
+	public boolean estUnitaire() {
+		// Unitaire
+		if(I.size() == 1) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	/** 
 	* Permet de transformer l'automate en un automate standard  
 	* @return un automate équivalent standard
 	*/
 	public Automate standardiser() {
 		System.out.println("standardiser() : méthode non implémentée");
 		Automate afn = (Automate) this.clone();
+		
+		// Retourner le même s'il est standard
+		if(afn.estStandard()) afn = this;
+		
+		// Standardiser
+		// http://www.momirandum.com/automates-finis/Standardisation.html
+		else {
+			// Create new ISTate
+			// Check if not same name ?? HOW TO DO
+			// Useful unitariser() ? -> not same : only one state but juste merge all InitSt
+			Etat uniqueIState = new Etat("I");
+			
+			// Change all transitions sources from other IStates to this one
+			for(Transition trans : mu) {
+				if(I.contains(trans.source)) {
+					try {
+						this.addTransition(new Transition(uniqueIState.name, trans.symbol, trans.source));
+					} catch (JFSMException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
+			// Remove all other IStates from I
+			for(String iSTate : I) {
+				I.remove(iSTate);
+			}
+			
+			// Add new IState to I and Q
+			this.addEtat(uniqueIState);
+			try {
+				this.setInitial(uniqueIState);
+			} catch (JFSMException e) {
+				e.printStackTrace();
+			}
+		}
+		
 
 		// A compléter
 
@@ -339,10 +389,21 @@ public class Automate implements Cloneable {
 	* @return booléen
 	*/
 	public boolean estStandard() {
-		System.out.println("estStandard() : méthode non implémentée");
 		boolean ok = false;
-
-		// A compléter
+		// Unitaire
+		if(this.estUnitaire()) {
+			// Vérifier si aucune transition transition vers EI
+			// Put all target States in Set
+			Set<String> allCibles = new HashSet<String>();
+			for(Transition elem : mu) {
+				allCibles.add(elem.cible);
+			}
+			
+			// Check if Initial State in Target States
+			if(!allCibles.contains(I.toArray()[0])) {
+				ok = true;
+			}
+		}
 		
 		return ok;
 	}
