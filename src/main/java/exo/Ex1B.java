@@ -16,7 +16,7 @@ public class Ex1B {
 	public static void main(String argv []) throws JFSMException {
 
 		// Automate standard
-		Set<String> A = new HashSet<String>();
+		/*Set<String> A = new HashSet<String>();
 		A.add("GA");
 
 		Set<Etat> Q = new HashSet<Etat>();
@@ -32,10 +32,10 @@ public class Ex1B {
 
 		Set<String> I = new HashSet<String>();
 		I.add("1");
-		Automate afn = new AFN(A, Q, I, F, mu);
+		Automate afn = new AFN(A, Q, I, F, mu);*/
 
 		// Automate non standard
-		/*Set<String> A = new HashSet<String>();
+		Set<String> A = new HashSet<String>();
 		A.add("MEU");A.add("GA");A.add("ZO");A.add("BU");
 
 		Set<Etat> Q = new HashSet<Etat>();
@@ -76,11 +76,35 @@ public class Ex1B {
 		mu.add(new Transition("9","MEU","8"));
 		mu.add(new Transition("9","BU","9"));
 
-		Automate afn = new AFN(A, Q, I, F, mu);*/
+		Automate afn = new AFN(A, Q, I, F, mu);
 
 //		System.out.println(afn.standardiser().estStandard());
-		System.out.println(afn.estNormalise());
-		System.out.println(afn.standardiser().normaliser().estNormalise());
+//		System.out.println(afn.estNormalise());
+
+		// Testing to standardize and normalize GaBuZoMeu
+		// Standardize : OK
+		/*Set<Transition> trans = new HashSet<Transition>();
+		for(Transition t : afn.standardiser().mu) {
+			if(t.source.equals("I")){
+				trans.add(t);
+			}
+		}
+
+		System.out.println(trans);*/
+
+		// Normalize : OK
+		System.out.println(afn.normaliser().estNormalise());
+		System.out.println(afn.normaliser().estStandard());
+		Set<Transition> trans = new HashSet<Transition>();
+		for(Transition t : afn.normaliser().mu) {
+			if(t.cible.equals("F")){
+				trans.add(t);
+			}
+		}
+
+		System.out.println(trans);
+
+
 //		System.out.println(afn);
 //
 //		List<String> l = new ArrayList<String>();

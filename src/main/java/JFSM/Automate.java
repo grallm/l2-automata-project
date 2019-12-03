@@ -349,7 +349,7 @@ public class Automate implements Cloneable {
 			for (Transition trans : mu) {
 				if (I.contains(trans.source)) {
 					try {
-						afn.addTransition(new Transition(uniqueIState.name, trans.symbol, trans.source));
+						afn.addTransition(new Transition(uniqueIState.name, trans.symbol, trans.cible));
 					} catch (JFSMException e) {
 						e.printStackTrace();
 					}
@@ -387,7 +387,7 @@ public class Automate implements Cloneable {
 			}
 			
 			// Check if Initial State in Target States
-			if(!allCibles.contains(I.toArray()[0])) {
+			if(!allCibles.contains(I.iterator().next())) {
 				ok = true;
 			}
 		}
@@ -455,7 +455,7 @@ public class Automate implements Cloneable {
 			}
 
 			// Check if the Final State is in the Source States
-			if(!allSources.contains(F.toArray()[0])) {
+			if(!allSources.contains(F.iterator().next())) {
 				ok = true;
 			}
 		}
