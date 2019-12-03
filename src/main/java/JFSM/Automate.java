@@ -402,14 +402,8 @@ public class Automate implements Cloneable {
 	* @return un automate équivalent normalisé
 	*/
 	public Automate normaliser() {
-		System.out.println("normaliser() : méthode non implémentée");
-		Automate afn = (Automate) this.clone();
-
-		/** TODO
-		 * Not necessary to emondate -> will have some useless states
-		 * Create new final state
-		 * Duplicate all transitions to final states to the new one
-		 * */
+		// Standardize before (if already, return the same)
+		Automate afn = this.standardiser();
 
 		// Return the same if already normalized
 		if(afn.estNormalise()) afn = this;
@@ -443,6 +437,8 @@ public class Automate implements Cloneable {
 				e.printStackTrace();
 			}
 		}
+
+		// We don't remove old final states useless (without out transition) (= emondate)
 
 		return afn;
 	}
