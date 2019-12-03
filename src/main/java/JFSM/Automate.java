@@ -357,9 +357,7 @@ public class Automate implements Cloneable {
 			}
 
 			// Remove all other initial state from I
-			for (String iSTate : I) {
-				afn.I.remove(iSTate);
-			}
+			afn.I.clear();
 
 			// Add new initial state to I and Q
 			afn.addEtat(uniqueIState);
@@ -425,9 +423,7 @@ public class Automate implements Cloneable {
 			}
 
 			// Remove all other final states from F
-			for (String fSTate : F) {
-				afn.F.remove(fSTate);
-			}
+			afn.F.clear();
 
 			// Add new initial state to F and Q
 			afn.addEtat(uniqueFState);
