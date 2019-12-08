@@ -89,11 +89,10 @@ public class Ex1B {
 				trans.add(t);
 			}
 		}
-
 		System.out.println(trans);*/
 
 		// Normalize : OK
-		System.out.println(afn.normaliser().estNormalise());
+		/*System.out.println(afn.normaliser().estNormalise());
 		System.out.println(afn.normaliser().estStandard());
 		Set<Transition> trans = new HashSet<Transition>();
 		for(Transition t : afn.normaliser().mu) {
@@ -101,8 +100,15 @@ public class Ex1B {
 				trans.add(t);
 			}
 		}
+		System.out.println(trans);*/
 
+		// Test equals Transition
+		HashSet<Transition> trans = new HashSet<Transition>();
+		trans.add(new Transition("1", "a", "2"));
 		System.out.println(trans);
+		trans.add(new Transition("1", "a", "2"));
+		System.out.println(trans);
+//		System.out.println((new Transition("1", "a", "2")).equals(new Transition("1", "a", "2")));
 
 
 //		System.out.println(afn);
