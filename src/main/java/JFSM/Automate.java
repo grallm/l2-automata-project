@@ -495,10 +495,34 @@ public class Automate implements Cloneable {
 	* @return un automate reconnaissant la mise à l'étoile
 	*/
 	public Automate etoile() {
+		/* What does it do
+		 * Must be standardized
+		 * Make the initial state final
+		 * Copy all transition from the initial state and make them from final states
+		 * */
 		System.out.println("etoile() : méthode non implémentée");
-		Automate afn = (Automate) this.clone();
 
-		// A compléter
+		Automate afn = this.standardiser();
+
+		// Add all transitions from the initial state to all the final one
+		for(Transition trans : this.mu){
+			if(trans.source.equals(this.I.iterator().next())){
+				for(String state : this.F){
+					try {
+						afn.addTransition(new Transition(state, trans.symbol, trans.cible));
+					} catch (JFSMException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
+		// Make the Initial State Final
+		try {
+			afn.setFinal(afn.I.iterator().next());
+		} catch (JFSMException e) {
+			e.printStackTrace();
+		}
 
 		return afn;
 	}
@@ -567,7 +591,7 @@ public class Automate implements Cloneable {
 		for(Transition trans : this.mu){
 			try{
 				// Add to clon the reverted transition
-				afn.mu.add(new Transition(trans.cible, trans.symbol, trans.source));
+				afn.addTransition(new Transition(trans.cible, trans.symbol, trans.source));
 			}catch (JFSMException e){
 				e.printStackTrace();
 			}
