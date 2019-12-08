@@ -346,10 +346,26 @@ public class Automate implements Cloneable {
 			Etat uniqueIState = new Etat("I");
 
 			// Change all transitions sources from other initial states to this one
+			afn.mu.clear();
 			for (Transition trans : mu) {
 				if (I.contains(trans.source)) {
 					try {
-						afn.addTransition(new Transition(uniqueIState.name, trans.symbol, trans.cible));
+						// Find the transition in all already added, if not found add this one
+						boolean found = false;
+						Iterator<Transition> allTrans = afn.mu.iterator(); // Make the Set iterable
+						// Stop if found
+						while(allTrans.hasNext() && !found){
+							Transition checkTrans = allTrans.next();
+							// NOT WORKING : some source and target aren't string but states
+							if(checkTrans.source.equals(trans.source) && checkTrans.symbol.equals(trans.symbol) && checkTrans.cible.equals(trans.cible)){
+								found = true;
+							}
+						}
+						// Add the trans if not already in
+						System.out.println(afn.mu);
+						System.out.println(found);
+						System.out.println(new Transition(uniqueIState.name, trans.symbol, trans.cible));
+						if(!found) afn.addTransition(new Transition(uniqueIState.name, trans.symbol, trans.cible));
 					} catch (JFSMException e) {
 						e.printStackTrace();
 					}
@@ -412,6 +428,7 @@ public class Automate implements Cloneable {
 			Etat uniqueFState = new Etat("F");
 
 			// Change all transitions sources from other final initial states to this one
+			afn.mu.clear();
 			for (Transition trans : mu) {
 				if (F.contains(trans.cible)) {
 					try {
@@ -538,8 +555,33 @@ public class Automate implements Cloneable {
 	* @return l'automate complet
 	*/
 	public Automate transpose() {
-		System.out.println("transpose() : méthode non implémentée");
-		return this;
+		/* What does it do
+		 * revert source and target of all transitions
+		 * make final all initial states
+		 * make intial all final states
+		 * */
+		Automate afn = (Automate) this.clone();
+
+		// Revert all transitions
+		afn.mu.clear();
+		for(Transition trans : this.mu){
+			try{
+				// Add to clon the reverted transition
+				afn.mu.add(new Transition(trans.cible, trans.symbol, trans.source));
+			}catch (JFSMException e){
+				e.printStackTrace();
+			}
+		}
+
+		// All Initial states to Final
+		afn.F.clear();
+		afn.F.addAll(this.I);
+
+		// All Final states to Initial
+		afn.I.clear();
+		afn.I.addAll(this.F);
+
+		return afn;
 	}
 
 	/** 

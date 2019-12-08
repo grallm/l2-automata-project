@@ -78,7 +78,7 @@ public class Ex1B {
 
 		Automate afn = new AFN(A, Q, I, F, mu);
 
-//		System.out.println(afn.standardiser().estStandard());
+//		System.out.println(afn.standardiser().mu.size());
 //		System.out.println(afn.estNormalise());
 
 		// Testing to standardize and normalize GaBuZoMeu
@@ -88,12 +88,15 @@ public class Ex1B {
 			if(t.source.equals("I")){
 				trans.add(t);
 			}
-		}
+		}*/
 
-		System.out.println(trans);*/
-
+		Transition trans = new Transition("I", "GA","6");
+		Transition checkTrans = new Transition("I", "GA","6");
+		System.out.println(checkTrans.source.equals(trans.source) && checkTrans.symbol.equals(trans.symbol) && checkTrans.cible.equals(trans.cible));
+//[I -MEU-> 1, I -ZO-> 6, I -BU-> 5, I -ZO-> 6, I -ZO-> 1, I -BU-> 5, I -GA-> 4, I -GA-> 3, I -MEU-> 2]
+//[I -BU-> 5, I -GA-> 3, I -MEU-> 2, I -GA-> 4, I -ZO-> 1, I -MEU-> 1, I -ZO-> 6, I -BU-> 5, I -ZO-> 6]
 		// Normalize : OK
-		System.out.println(afn.normaliser().estNormalise());
+		/*System.out.println(afn.normaliser().estNormalise());
 		System.out.println(afn.normaliser().estStandard());
 		Set<Transition> trans = new HashSet<Transition>();
 		for(Transition t : afn.normaliser().mu) {
@@ -102,7 +105,7 @@ public class Ex1B {
 			}
 		}
 
-		System.out.println(trans);
+		System.out.println(trans);*/
 
 
 //		System.out.println(afn);
