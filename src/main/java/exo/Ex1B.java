@@ -88,7 +88,8 @@ public class Ex1B {
 			if(t.source.equals("I")){
 				trans.add(t);
 			}
-		}*/
+		}
+		System.out.println(trans);*/
 
 		Transition trans = new Transition("I", "GA","6");
 		Transition checkTrans = new Transition("I", "GA","6");
@@ -104,8 +105,15 @@ public class Ex1B {
 				trans.add(t);
 			}
 		}
-
 		System.out.println(trans);*/
+
+		// Test equals Transition
+		HashSet<Transition> trans = new HashSet<Transition>();
+		trans.add(new Transition("1", "a", "2"));
+		System.out.println(trans);
+		trans.add(new Transition("1", "a", "2"));
+		System.out.println(trans);
+//		System.out.println((new Transition("1", "a", "2")).equals(new Transition("1", "a", "2")));
 
 
 //		System.out.println(afn);
