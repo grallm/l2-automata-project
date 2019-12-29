@@ -13,123 +13,99 @@ import JFSM.JFSMException;
 import JFSM.Transition;
 
 public class Ex1B {
-	public static void main(String argv []) throws JFSMException {
+	public static void main(String[] args) throws JFSMException {
+		// transpose();
+		etoile();
+	}
 
-		// Automate standard
-		/*Set<String> A = new HashSet<String>();
-		A.add("GA");
-
-		Set<Etat> Q = new HashSet<Etat>();
-		Q.add(new Etat("1"));Q.add(new Etat("2"));
-
-		Set<Transition> mu = new HashSet<Transition>();
-
-		mu.add(new Transition("1","BU","2"));
-		mu.add(new Transition("2","BU","1"));
-
-		Set<String> F = new HashSet<String>();
-		F.add("2");
-
-		Set<String> I = new HashSet<String>();
-		I.add("1");
-		Automate afn = new AFN(A, Q, I, F, mu);*/
-
-		// Automate non standard
+	// Test Automate.transpose()
+	public static void transpose() throws JFSMException {
+		// Code exported from http://madebyevan.com/fsm/ with https://github.com/grallm/export-fsm
+		// Alphabet
 		Set<String> A = new HashSet<String>();
-		A.add("MEU");A.add("GA");A.add("ZO");A.add("BU");
+		A.add("a");
+		A.add("b");
 
+		// States
 		Set<Etat> Q = new HashSet<Etat>();
-		Q.add(new Etat("1"));Q.add(new Etat("2"));Q.add(new Etat("3"));
-		Q.add(new Etat("4"));Q.add(new Etat("5"));Q.add(new Etat("6"));
-		Q.add(new Etat("7"));Q.add(new Etat("8"));Q.add(new Etat("9"));
+		Q.add(new Etat("1"));
+		Q.add(new Etat("2"));
+		Q.add(new Etat("3"));
 
-		Set<String> F = new HashSet<String>();
-		F.add("7");
-		F.add("8");
-		F.add("9");
-
+		// Initial States
 		Set<String> I = new HashSet<String>();
 		I.add("1");
-		I.add("2");
-		I.add("3");
 
+		// Final States
+		Set<String> F = new HashSet<String>();
+		F.add("3");
+
+		// Transitions
 		Set<Transition> mu = new HashSet<Transition>();
-		mu.add(new Transition("1","ZO","1"));
-		mu.add(new Transition("1","GA","4"));
-		mu.add(new Transition("1","BU","5"));
-		mu.add(new Transition("2","MEU","1"));
-		mu.add(new Transition("2","BU","5"));
-		mu.add(new Transition("2","ZO","6"));
-		mu.add(new Transition("3","GA","3"));
-		mu.add(new Transition("3","MEU","2"));
-		mu.add(new Transition("3","ZO","6"));
-		mu.add(new Transition("4","GA","7"));
-		mu.add(new Transition("4","ZO","5"));
-		mu.add(new Transition("4","BU","8"));
-		mu.add(new Transition("5","BU","8"));
-		mu.add(new Transition("5","ZO","9"));
-		mu.add(new Transition("5","GA","6"));
-		mu.add(new Transition("6","GA","6"));
-		mu.add(new Transition("6","ZO","9"));
-		mu.add(new Transition("7","MEU","7"));
-		mu.add(new Transition("8","MEU","7"));
-		mu.add(new Transition("9","MEU","8"));
-		mu.add(new Transition("9","BU","9"));
+		mu.add(new Transition("1", "a", "2"));
+		mu.add(new Transition("2", "b", "3"));
 
+		// Constructor
 		Automate afn = new AFN(A, Q, I, F, mu);
 
-//		System.out.println(afn.standardiser().mu.size());
-//		System.out.println(afn.estNormalise());
 
-		// Testing to standardize and normalize GaBuZoMeu
-		// Standardize : OK
-		/*Set<Transition> trans = new HashSet<Transition>();
-		for(Transition t : afn.standardiser().mu) {
-			if(t.source.equals("I")){
-				trans.add(t);
-			}
-		}
-		System.out.println(trans);*/
+		// Check words : ab and ba - true and false
+		List<String> l = new ArrayList<String>();
+		l.add("a");l.add("b");
+		System.out.println(afn.run(l) + "\n");
+		List<String> l2= new ArrayList<String>();
+		l2.add("b");l2.add("a");
+		System.out.println(afn.run(l2) + "\n" + "\n");
 
-		Transition trans = new Transition("I", "GA","6");
-		Transition checkTrans = new Transition("I", "GA","6");
-		System.out.println(checkTrans.source.equals(trans.source) && checkTrans.symbol.equals(trans.symbol) && checkTrans.cible.equals(trans.cible));
-//[I -MEU-> 1, I -ZO-> 6, I -BU-> 5, I -ZO-> 6, I -ZO-> 1, I -BU-> 5, I -GA-> 4, I -GA-> 3, I -MEU-> 2]
-//[I -BU-> 5, I -GA-> 3, I -MEU-> 2, I -GA-> 4, I -ZO-> 1, I -MEU-> 1, I -ZO-> 6, I -BU-> 5, I -ZO-> 6]
-		// Normalize : OK
-		/*System.out.println(afn.normaliser().estNormalise());
-		System.out.println(afn.normaliser().estStandard());
-		Set<Transition> trans = new HashSet<Transition>();
-		for(Transition t : afn.normaliser().mu) {
-			if(t.cible.equals("F")){
-				trans.add(t);
-			}
-		}
-		System.out.println(trans);*/
+		// Check words with transposed : ab and ba - false and true
+		System.out.println(afn.transpose().run(l) + "\n");
+		System.out.println(afn.transpose().run(l2) + "\n");
+	}
 
-		// Test equals Transition
-		HashSet<Transition> trans = new HashSet<Transition>();
-		trans.add(new Transition("1", "a", "2"));
-		System.out.println(trans);
-		trans.add(new Transition("1", "a", "2"));
-		System.out.println(trans);
-//		System.out.println((new Transition("1", "a", "2")).equals(new Transition("1", "a", "2")));
+	// Test Automate.etoile()
+	public static void etoile() throws JFSMException {
+		// Code exported from http://madebyevan.com/fsm/ with https://github.com/grallm/export-fsm
+		// Alphabet
+		Set<String> A = new HashSet<String>();
+		A.add("a");
+		A.add("b");
+
+		// States
+		Set<Etat> Q = new HashSet<Etat>();
+		Q.add(new Etat("1"));
+		Q.add(new Etat("2"));
+		Q.add(new Etat("3"));
+
+		// Initial States
+		Set<String> I = new HashSet<String>();
+		I.add("1");
+
+		// Final States
+		Set<String> F = new HashSet<String>();
+		F.add("3");
+
+		// Transitions
+		Set<Transition> mu = new HashSet<Transition>();
+		mu.add(new Transition("1", "a", "2"));
+		mu.add(new Transition("2", "b", "3"));
+
+		// Constructor
+		Automate afn = new AFN(A, Q, I, F, mu);
 
 
-//		System.out.println(afn);
-//
-//		List<String> l = new ArrayList<String>();
-//		// MEUMEUBUZOBUMEU
-//		l.add("MEU");l.add("MEU");l.add("BU");l.add("ZO");l.add("BU");l.add("MEU");
-//		System.out.println(afn.run(l) + "\n");
-//
-//		List<String> l2 = new ArrayList<String>();
-//		// GABUZOMEU
-//		l2.add("GA");l2.add("BU");l2.add("ZO");l2.add("MEU");
-//		System.out.println(afn.run(l2));
-//
-//		List<String> l = new ArrayList<String>();
-//		l.add("MEUMEUBUZOBUMEU");l.add("GABUZOMEU");l.add("ZOZOGAZOGAGAZO");l.add("BUGAZOMEU");
-//		System.out.println(afn.run(l));
+		// Check words : ab, abab and '' (nothing) - true, false and false
+		List<String> l = new ArrayList<String>();
+		l.add("a");l.add("b");
+		System.out.println(afn.run(l) + "\n");
+		List<String> l2= new ArrayList<String>();
+		l2.add("a");l2.add("b");l2.add("a");l2.add("b");
+		System.out.println(afn.run(l2) + "\n" + "\n");
+		List<String> l3= new ArrayList<String>();
+		System.out.println(afn.run(l3) + "\n" + "\n");
+
+		// Check words of starred automate : ab, abab and '' (nothing) - true, true and true
+		System.out.println(afn.etoile().run(l) + "\n");
+		System.out.println(afn.etoile().run(l2) + "\n");
+		System.out.println(afn.etoile().run(l3) + "\n" + "\n");
 	}
 }

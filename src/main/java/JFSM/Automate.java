@@ -336,12 +336,9 @@ public class Automate implements Cloneable {
 	*/
 	public Automate standardiser() {
 		Automate afn = (Automate) this.clone();
-		
-		// Retourner le même s'il est standard
-		if(afn.estStandard()) afn = this;
-		
+
 		// Standardiser
-		else {
+		if(!afn.estStandard()){
 			// Create new initial state
 			Etat uniqueIState = new Etat("I");
 
@@ -356,15 +353,11 @@ public class Automate implements Cloneable {
 						// Stop if found
 						while(allTrans.hasNext() && !found){
 							Transition checkTrans = allTrans.next();
-							// NOT WORKING : some source and target aren't string but states
 							if(checkTrans.source.equals(trans.source) && checkTrans.symbol.equals(trans.symbol) && checkTrans.cible.equals(trans.cible)){
 								found = true;
 							}
 						}
 						// Add the trans if not already in
-						System.out.println(afn.mu);
-						System.out.println(found);
-						System.out.println(new Transition(uniqueIState.name, trans.symbol, trans.cible));
 						if(!found) afn.addTransition(new Transition(uniqueIState.name, trans.symbol, trans.cible));
 					} catch (JFSMException e) {
 						e.printStackTrace();
@@ -419,11 +412,8 @@ public class Automate implements Cloneable {
 		// Standardize before (if already, return the same)
 		Automate afn = this.standardiser();
 
-		// Return the same if already normalized
-		if(afn.estNormalise()) afn = this;
-
 		// Normalize
-		else {
+		if(!afn.estNormalise()) {
 			// Create new final state
 			Etat uniqueFState = new Etat("F");
 
@@ -500,13 +490,14 @@ public class Automate implements Cloneable {
 		 * Make the initial state final
 		 * Copy all transition from the initial state and make them from final states
 		 * */
-		System.out.println("etoile() : méthode non implémentée");
-
 		Automate afn = this.standardiser();
 
 		// Add all transitions from the initial state to all the final one
 		for(Transition trans : this.mu){
+			// Compare 2 strings : the source and the initial state (states are strings)
+			System.out.println(trans.source.equals("1"));
 			if(trans.source.equals(this.I.iterator().next())){
+				// Add transition from all final states
 				for(String state : this.F){
 					try {
 						afn.addTransition(new Transition(state, trans.symbol, trans.cible));
